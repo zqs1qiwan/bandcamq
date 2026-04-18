@@ -293,11 +293,17 @@ const buildHtmlUI = (imageUrl: string | null): string => {
                 currentAlbumArtist = data.artist || 'Various Artists';
                 currentTrackIndex = -1;
                
+                // XSS 防护：转义 HTML 特殊字符
+                function escHtml(s) {
+                    if (!s) return '';
+                    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+                }
+
                 let albumHtml = 
                     '<div id="album-info">' +
-                        '<img src="' + data.album_art_url + '" alt="Album Art">' +
-                        '<h3>' + data.album_title + '</h3>' +
-                        '<h4>by ' + currentAlbumArtist + '</h4>' +
+                        '<img src="' + escHtml(data.album_art_url) + '" alt="Album Art">' +
+                        '<h3>' + escHtml(data.album_title) + '</h3>' +
+                        '<h4>by ' + escHtml(currentAlbumArtist) + '</h4>' +
                     '</div>';
                
                 let tracksHtml = '<div id="track-list"><ul>';
@@ -310,10 +316,10 @@ const buildHtmlUI = (imageUrl: string | null): string => {
                         '<li data-track-index="' + i + '">' +
                             '<div class="track-play-button">▶</div>' +
                             '<div class="track-info">' +
-                                '<span class="track-title">' + track.title + '</span>' +
-                                '<span class="track-duration">(' + track.duration_text + ')</span>' +
+                                '<span class="track-title">' + escHtml(track.title) + '</span>' +
+                                '<span class="track-duration">(' + escHtml(track.duration_text) + ')</span>' +
                             '</div>' +
-                            '<a href="' + downloadUrl + '" target="_blank" class="track-download-button">下载</a>' +
+                            '<a href="' + escHtml(downloadUrl) + '" target="_blank" class="track-download-button">下载</a>' +
                         '</li>';
                 }
                 tracksHtml += '</ul></div>';
@@ -514,6 +520,16 @@ export default {
         return new Response('缺少 url 参数', { status: 400 });
       }
 
+      // 安全校验：只允许 *.bandcamp.com 域名，防 SSRF
+      try {
+        const parsedUrl = new URL(targetUrl);
+        if (!parsedUrl.hostname.endsWith('.bandcamp.com')) {
+          return new Response('仅支持 bandcamp.com 域名', { status: 400 });
+        }
+      } catch {
+        return new Response('无效的 URL', { status: 400 });
+      }
+
       console.log(`[Prod] 正在抓取: ${targetUrl}`);
      
       try {
@@ -591,6 +607,16 @@ export default {
       if (!mp3Url) { return new Response('缺少 url 参数', { status: 400 }); }
      
       const decodedMp3Url = decodeURIComponent(mp3Url);
+
+      // 安全校验：下载 URL 必须是 bcbits.com（Bandcamp CDN），防 SSRF
+      try {
+        const parsedMp3Url = new URL(decodedMp3Url);
+        if (!parsedMp3Url.hostname.endsWith('.bcbits.com') && !parsedMp3Url.hostname.endsWith('.bandcamp.com')) {
+          return new Response('无效的下载来源', { status: 400 });
+        }
+      } catch {
+        return new Response('无效的 URL', { status: 400 });
+      }
 
       const mp3Resp = await fetch(decodedMp3Url, {
         headers: { 'Referer': 'https://bandcamp.com/' }
