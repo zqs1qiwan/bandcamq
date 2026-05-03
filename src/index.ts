@@ -130,7 +130,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
     /* ── Hero ── */
     .hero {
       flex: 1;
-      padding: 72px 24px 48px;
+      padding: 48px 24px 24px;
       text-align: center;
       background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,229,255,0.08) 0%, transparent 70%);
     }
@@ -164,7 +164,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
       color: var(--muted);
       font-size: 15px;
       max-width: 520px;
-      margin: 0 auto 36px;
+      margin: 0 auto 16px;
     }
 
     /* ── Input Card ── */
