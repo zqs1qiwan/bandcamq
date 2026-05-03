@@ -244,6 +244,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 
     /* ── Player Card ── */
     #player-container {
+      display: none;
       max-width: 720px;
       margin: 20px auto 0;
       background: var(--card);
@@ -730,6 +731,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
                 tracksHtml += '</ul></div>';
 
                 resultsDiv.innerHTML = albumHtml + tracksHtml;
+                playerContainer.style.display = 'block';
 
             } catch (e) {
                 resultsDiv.innerHTML = '<p class="error">获取失败: ' + e.message + '</p>';
