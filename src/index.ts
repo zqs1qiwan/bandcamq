@@ -86,6 +86,32 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
     }
     nav a.nav-link:hover { color: var(--text); }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      box-shadow: 0 0 6px rgba(29,233,182,0.6);
+      animation: pulse-dot 2.5s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    @media (max-width: 480px) { .nav-status { display: none; } }
+
     /* ── Hero ── */
     .hero {
       padding: 72px 24px 48px;
@@ -513,7 +539,13 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
     <img src="https://laobaitv.net/images/logo.svg" alt="老白TV" onerror="this.style.display='none'">
     老白TV <span>工具箱</span>
   </a>
-  <a href="https://tools.laobaitv.net" class="nav-link">← 返回工具箱</a>
+  <div class="nav-right">
+    <span class="nav-status">
+      <span class="status-dot"></span>
+      高品质 · 免费
+    </span>
+    <a href="https://tools.laobaitv.net" class="nav-link">← 返回工具箱</a>
+  </div>
 </nav>
 
 <section class="hero">
