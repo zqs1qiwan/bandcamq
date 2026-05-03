@@ -14,7 +14,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bandcamp 音乐下载 · 老白TV工具</title>
-  <link rel="icon" href="https://laobaitv.net/favicon.ico">
+  <link rel="icon" href="https://laobaitv.net/assets/images/logo/favicon-32x32.png">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -553,7 +553,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 
 <nav>
   <a href="https://tools.laobaitv.net" class="logo">
-    <img src="https://laobaitv.net/images/logo.svg" alt="老白TV" onerror="this.style.display='none'">
+    <img src="https://laobaitv.net/assets/images/logo/laobaitv-logo-white.png" alt="老白TV" onerror="this.style.display='none'">
     老白TV <span>工具箱</span>
   </a>
   <div class="nav-right">
