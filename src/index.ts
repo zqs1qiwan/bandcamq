@@ -523,7 +523,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 
     /* ── Footer ── */
     footer {
-      margin-top: auto;
+      margin-top: 60px;
       padding: 40px 24px 24px;
       text-align: center;
       color: var(--muted);
