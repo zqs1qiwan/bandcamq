@@ -14,6 +14,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
     <title>Bandcamp Downloader - 老白 Tools</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
+    <link rel="icon" href="https://laobaitv.net/favicon.ico">
     <style>
         :root {
             --bg: #0a0a0f;
@@ -21,378 +22,578 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
             --bg3: #1a1b23;
             --card: #16171f;
             --border: rgba(0,229,255,0.12);
-            --accent: #00e5ff;
-            --accent2: #1de9b6;
-            --text: #e8eaf0;
-            --muted: #8891a4;
-            --danger: #ff5370;
-            --radius: 14px;
-            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
-        }
-        *, *::before, *::after { box-sizing: border-box; }
-        html, body {
-            margin: 0; padding: 0;
-            overflow-x: hidden;
-        }
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+const buildHtmlUI = (_imageUrl: string | null): string => {
 
-        /* ── Nav bar ── */
-        .nav {
-            width: 100%;
-            background: var(--bg2);
-            border-bottom: 1px solid var(--border);
-            padding: 0 24px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-shrink: 0;
-        }
-        .nav-logo {
-            font-size: 1.1em;
-            font-weight: 700;
-            color: var(--accent);
-            text-decoration: none;
-            letter-spacing: 0.02em;
-        }
-        .nav-logo:hover { color: var(--accent2); }
-        .nav-back {
-            font-size: 0.92em;
-            color: var(--muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .nav-back:hover { color: var(--text); }
+  return `
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bandcamp 音乐下载 · 老白TV工具</title>
+  <link rel="icon" href="https://laobaitv.net/favicon.ico">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* ── Page layout ── */
-        .page {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 16px 60px;
-        }
+    :root {
+      --bg:      #0a0a0f;
+      --bg2:     #111318;
+      --bg3:     #1a1b23;
+      --card:    #16171f;
+      --border:  rgba(0,229,255,0.12);
+      --accent:  #00e5ff;
+      --accent2: #1de9b6;
+      --text:    #e8eaf0;
+      --muted:   #8891a4;
+      --danger:  #ff5370;
+      --radius:  14px;
+      --font:    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
+    }
 
-        /* ── Main card ── */
-        .input-card {
-            width: 100%;
-            max-width: 680px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 32px 28px;
-        }
+    html { scroll-behavior: smooth; }
 
-        /* ── Header ── */
-        .card-header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-        .card-header h1 {
-            font-size: 1.6em;
-            font-weight: 700;
-            margin: 0 0 8px;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .card-header p {
-            font-size: 0.95em;
-            color: var(--muted);
-            margin: 0;
-        }
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+    }
 
-        /* ── Input group ── */
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 13px 16px;
-            font-size: 16px;
-            font-family: var(--font);
-            background: var(--bg3);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        input[type="text"]::placeholder { color: var(--muted); }
-        input[type="text"]:focus { border-color: var(--accent); }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
 
-        button#fetch-btn {
-            width: 100%;
-            padding: 13px 20px;
-            font-size: 1em;
-            font-weight: 600;
-            font-family: var(--font);
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            color: #0a0a0f;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: opacity 0.2s, transform 0.1s;
-        }
-        button#fetch-btn:hover { opacity: 0.88; }
-        button#fetch-btn:active { transform: scale(0.98); }
-        button#fetch-btn:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-            transform: none;
-        }
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg2);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 0;
+    }
 
-        /* ── Results container ── */
-        #results-container {
-            margin-top: 24px;
-            text-align: left;
-            width: 100%;
-        }
+    .logo {
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none; color: var(--text);
+      font-size: 15px; font-weight: 600;
+      min-width: 0; overflow: hidden;
+    }
 
-        /* ── Player ── */
-        #player-container {
-            display: block;
-            margin-top: 24px;
-            width: 100%;
-            padding: 16px;
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-        }
-        .player-top-row {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 10px;
-        }
-        #player-art {
-            width: 52px;
-            height: 52px;
-            border-radius: 8px;
-            flex-shrink: 0;
-            object-fit: cover;
-            border: 1px solid var(--border);
-        }
-        .player-info {
-            flex: 1;
-            min-width: 0;
-            text-align: left;
-        }
-        #player-title {
-            font-weight: 600;
-            font-size: 0.97em;
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: var(--text);
-        }
-        #player-artist {
-            font-size: 0.85em;
-            color: var(--muted);
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-top: 2px;
-        }
-        .player-timeline {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 6px;
-        }
-        #current-time, #total-time {
-            font-size: 0.78em;
-            color: var(--muted);
-            min-width: 38px;
-        }
-        #current-time { text-align: left; }
-        #total-time { text-align: right; }
-        #progress-bar {
-            flex: 1;
-            accent-color: var(--accent);
-        }
-        .player-buttons {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 18px;
-            margin-top: 14px;
-        }
-        .player-buttons button {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--text);
-            border-radius: 50%;
-            width: 40px; height: 40px;
-            font-size: 1.15em; padding: 0;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-        }
-        .player-buttons button:hover {
-            background: var(--bg2);
-            border-color: var(--accent);
-        }
-        button#play-pause-btn {
-            width: 46px; height: 46px;
-            font-size: 1.4em;
-            background: rgba(0,229,255,0.1);
-            border-color: var(--accent);
-        }
-        button#play-pause-btn:hover {
-            background: rgba(0,229,255,0.2);
-        }
+    .logo img {
+      height: 26px; width: auto; flex-shrink: 0;
+      filter: brightness(1.1);
+    }
 
-        /* ── Album info ── */
-        #album-info {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        #album-info img {
-            width: 100%;
-            max-width: 200px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        }
-        #album-info h3 {
-            font-size: 1.2em;
-            font-weight: 600;
-            margin: 14px 0 4px;
-            color: var(--text);
-        }
-        #album-info h4 {
-            font-size: 0.95em;
-            font-weight: 400;
-            color: var(--muted);
-            margin: 0;
-        }
+    .logo span { color: var(--accent); white-space: nowrap; }
 
-        /* ── Track list ── */
-        #track-list ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        #track-list li {
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            padding: 11px 14px;
-            margin-top: -1px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s;
-            cursor: pointer;
-        }
-        #track-list li:first-child { border-radius: var(--radius) var(--radius) 0 0; }
-        #track-list li:last-child { border-radius: 0 0 var(--radius) var(--radius); margin-bottom: 8px; }
-        #track-list li:only-child { border-radius: var(--radius); }
-        #track-list li:hover { background: var(--bg2); }
-        .track-play-button {
-            font-size: 1em;
-            margin-right: 12px;
-            color: var(--muted);
-            transition: color 0.2s;
-            flex-shrink: 0;
-        }
-        #track-list li:hover .track-play-button { color: var(--accent); }
-        #track-list li.playing {
-            background: rgba(0,229,255,0.07);
-            border-color: rgba(0,229,255,0.3);
-        }
-        #track-list li.playing .track-play-button { color: var(--accent); }
-        .track-info { flex: 1; margin-right: 10px; pointer-events: none; }
-        .track-title { font-weight: 500; font-size: 0.95em; color: var(--text); }
-        .track-duration { font-size: 0.85em; color: var(--muted); margin-left: 6px; }
-        .track-download-button {
-            text-decoration: none;
-            padding: 6px 12px;
-            background: rgba(29,233,182,0.12);
-            color: var(--accent2);
-            border: 1px solid rgba(29,233,182,0.3);
-            border-radius: 8px;
-            font-size: 0.85em;
-            font-weight: 600;
-            white-space: nowrap;
-            transition: background 0.2s, border-color 0.2s;
-            z-index: 2;
-        }
-        .track-download-button:hover {
-            background: rgba(29,233,182,0.22);
-            border-color: var(--accent2);
-        }
+    nav a.nav-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color .2s;
+    }
+    nav a.nav-link:hover { color: var(--text); }
 
-        /* ── Error ── */
-        .error {
-            color: var(--danger);
-            font-weight: 600;
-            background: rgba(255,83,112,0.1);
-            border: 1px solid rgba(255,83,112,0.25);
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 0.95em;
-        }
+    /* ── Hero ── */
+    .hero {
+      padding: 72px 24px 48px;
+      text-align: center;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,229,255,0.08) 0%, transparent 70%);
+    }
 
-        /* ── Mobile ── */
-        @media (max-width: 480px) {
-            .input-card { padding: 24px 16px; }
-            .nav { padding: 0 16px; }
-        }
-    </style>
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.2);
+      color: var(--accent);
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      letter-spacing: .5px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 0%, #a8d8ea 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero > p {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+
+    /* ── Input Card ── */
+    .input-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,229,255,0.04);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    input#album-url {
+      flex: 1;
+      background: var(--bg2);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 16px;
+      padding: 12px 16px;
+      height: 52px;
+      outline: none;
+      transition: border-color .2s;
+      min-width: 0;
+    }
+    input#album-url::placeholder { color: var(--muted); }
+    input#album-url:focus { border-color: rgba(0,229,255,0.4); }
+
+    button#fetch-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 20px;
+      height: 52px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+      white-space: nowrap;
+      min-width: 96px;
+      background: linear-gradient(135deg, #00b4d8, #00e5ff);
+      color: #000;
+    }
+    button#fetch-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(0,229,255,0.35);
+    }
+    button#fetch-btn:active { transform: translateY(0); }
+    button#fetch-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .input-hint {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    /* ── Player Card ── */
+    #player-container {
+      max-width: 720px;
+      margin: 20px auto 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      animation: fadeUp .35s ease;
+    }
+
+    .player-top-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    #player-art {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .player-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    #player-title {
+      font-weight: 600;
+      font-size: 15px;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text);
+    }
+
+    #player-artist {
+      font-size: 13px;
+      color: var(--muted);
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 3px;
+    }
+
+    .player-timeline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #current-time, #total-time {
+      font-size: 11px;
+      color: var(--muted);
+      min-width: 38px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #current-time { text-align: left; }
+    #total-time { text-align: right; }
+
+    #progress-bar {
+      flex: 1;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .player-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .player-buttons button {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 50%;
+      width: 40px; height: 40px;
+      font-size: 16px; padding: 0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+
+    .player-buttons button:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: var(--accent);
+    }
+
+    button#play-pause-btn {
+      width: 48px; height: 48px;
+      font-size: 20px;
+      background: rgba(0,229,255,0.1);
+      border-color: rgba(0,229,255,0.3);
+    }
+
+    button#play-pause-btn:hover {
+      background: rgba(0,229,255,0.2);
+      border-color: var(--accent);
+    }
+
+    /* ── Results Container ── */
+    #results-container {
+      max-width: 720px;
+      margin: 20px auto 0;
+      width: 100%;
+    }
+
+    /* ── Album Info (dynamically injected) ── */
+    #album-info {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 16px;
+      animation: fadeUp .35s ease;
+    }
+
+    #album-info img {
+      width: 100%;
+      max-width: 180px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    #album-info h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 16px 0 6px;
+      color: var(--text);
+      background: linear-gradient(135deg, #ffffff 0%, #a8d8ea 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    #album-info h4 {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ── Track List (dynamically injected) ── */
+    #track-list {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      animation: fadeUp .35s ease;
+    }
+
+    #track-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #track-list li {
+      background: transparent;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background .2s;
+      cursor: pointer;
+      gap: 10px;
+    }
+
+    #track-list li:last-child { border-bottom: none; }
+    #track-list li:hover { background: rgba(0,229,255,0.04); }
+
+    #track-list li.playing {
+      background: rgba(0,229,255,0.07);
+      border-bottom-color: rgba(0,229,255,0.2);
+    }
+
+    .track-play-button {
+      font-size: 14px;
+      color: var(--muted);
+      transition: color .2s;
+      flex-shrink: 0;
+      width: 20px;
+      text-align: center;
+    }
+
+    #track-list li:hover .track-play-button { color: var(--accent); }
+    #track-list li.playing .track-play-button { color: var(--accent); }
+
+    .track-info {
+      flex: 1;
+      min-width: 0;
+      pointer-events: none;
+    }
+
+    .track-title {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
+    .track-duration {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .track-download-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      padding: 7px 14px;
+      background: linear-gradient(135deg, #00b4d8, #00e5ff);
+      color: #000;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 8px;
+      white-space: nowrap;
+      transition: all .2s;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      z-index: 2;
+    }
+
+    .track-download-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0,229,255,0.35);
+    }
+
+    /* ── Error ── */
+    .error {
+      background: rgba(255,83,112,0.08);
+      border: 1px solid rgba(255,83,112,0.2);
+      color: var(--danger);
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .spin {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(0,229,255,0.3);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: auto;
+      padding: 40px 24px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .hero { padding: 40px 16px 28px; }
+      .hero > p { font-size: 14px; }
+      .input-card { padding: 16px 12px; border-radius: 12px; }
+      .input-row { flex-direction: column; }
+      input#album-url { height: 48px; font-size: 16px; }
+      button#fetch-btn { height: 44px; min-width: 0; border-radius: 10px; }
+      #player-container { padding: 16px; }
+      #results-container { padding: 0 4px; }
+      nav a.nav-link { font-size: 12px; }
+    }
+  </style>
 </head>
 <body>
 
-    <nav class="nav">
-        <a href="https://tools.laobaitv.net" class="nav-logo">老白 Tools</a>
-        <a href="https://tools.laobaitv.net" class="nav-back">← 返回工具箱</a>
-    </nav>
+<nav>
+  <a href="https://laobaitv.net" class="logo">
+    <img src="https://laobaitv.net/images/logo.svg" alt="老白TV" onerror="this.style.display='none'">
+    老白TV <span>工具箱</span>
+  </a>
+  <a href="https://tools.laobaitv.net" class="nav-link">← 返回工具箱</a>
+</nav>
 
-    <div class="page">
-      <div class="input-card">
-        <div class="card-header">
-            <h1>Bandcamp Downloader</h1>
-            <p>输入 Bandcamp 专辑 URL，一键解析并下载曲目</p>
-        </div>
-        <div class="input-group">
-            <input type="text" id="album-url" placeholder="https://artist.bandcamp.com/album/...">
-            <button id="fetch-btn">获取曲目</button>
-        </div>
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+      <circle cx="5" cy="5" r="4"/>
+    </svg>
+    高品质 · 免费下载 · 支持专辑
+  </div>
+  <h1>Bandcamp 音乐下载</h1>
+  <p>粘贴专辑或单曲链接，获取高品质音频</p>
 
-        <div id="player-container">
-            <div class="player-top-row">
-                <img id="player-art" src="https://r2.laobaitv.net/laobaitv-logo-shade.png" alt="Album Art">
-                <div class="player-info">
-                    <span id="player-title">laobaitv bandcamp</span>
-                    <span id="player-artist">by 老白Q</span>
-                </div>
-            </div>
-            <div class="player-timeline">
-                <span id="current-time">00:00</span>
-                <input type="range" id="progress-bar" value="0" max="100">
-                <span id="total-time">00:00</span>
-            </div>
-            <div class="player-buttons">
-                <button id="prev-btn">⏮</button>
-                <button id="play-pause-btn">▶</button>
-                <button id="next-btn">⏭</button>
-            </div>
-        </div>
+  <div class="input-card">
+    <div class="input-row">
+      <input type="text" id="album-url" placeholder="https://artist.bandcamp.com/album/...">
+      <button id="fetch-btn">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        解析
+      </button>
+    </div>
+    <div class="input-hint">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px">
+        <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+      </svg>
+      支持 Bandcamp 专辑页和单曲页链接，点击解析后可在线试听并逐曲下载。
+    </div>
+  </div>
+</section>
 
-        <div id="results-container"></div>
-      </div>
+<div id="player-container" style="display:none">
+  <div class="player-top-row">
+    <img id="player-art" src="https://r2.laobaitv.net/laobaitv-logo-shade.png" alt="Album Art">
+    <div class="player-info">
+      <span id="player-title">laobaitv bandcamp</span>
+      <span id="player-artist">by 老白Q</span>
+    </div>
+  </div>
+  <div class="player-timeline">
+    <span id="current-time">00:00</span>
+    <input type="range" id="progress-bar" value="0" max="100">
+    <span id="total-time">00:00</span>
+  </div>
+  <div class="player-buttons">
+    <button id="prev-btn">⏮</button>
+    <button id="play-pause-btn">▶</button>
+    <button id="next-btn">⏭</button>
+  </div>
+</div>
+
+<div id="results-container"></div>
+
+<audio id="global-player" preload="auto"></audio>
+
+<footer>
+  <p>
+    <a href="https://laobaitv.net">老白TV</a> ·
+    <a href="https://tools.laobaitv.net">工具箱</a> ·
+    本工具仅供个人学习研究使用
+  </p>
+  <p style="margin-top:6px;opacity:.5">版权 © 2026 老白TV</p>
+</footer>
     </div>
 
     <audio id="global-player" preload="auto"></audio>
