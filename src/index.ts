@@ -52,51 +52,65 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 
     /* ── Nav ── */
     nav {
-      position: sticky; top: 0; z-index: 100;
-      background: var(--bg2);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 16px;
-      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 20px;
+      height: 56px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       min-width: 0;
+      box-sizing: border-box;
     }
-
     .logo {
-      display: flex; align-items: center; gap: 8px;
-      text-decoration: none; color: var(--text);
-      font-size: 15px; font-weight: 600;
-      min-width: 0; overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      min-width: 0;
+      overflow: hidden;
+      transition: opacity 0.2s;
     }
-
+    .logo:hover { opacity: 0.8; }
     .logo img {
-      height: 26px; width: auto; flex-shrink: 0;
+      height: 26px;
+      width: auto;
+      flex-shrink: 0;
       filter: brightness(1.1);
     }
-
-    .logo span { color: var(--accent); white-space: nowrap; }
-
+    .logo span {
+      color: var(--accent);
+      white-space: nowrap;
+    }
     nav a.nav-link {
       color: var(--muted);
       text-decoration: none;
       font-size: 13px;
-      transition: color .2s;
+      transition: color 0.2s;
+      white-space: nowrap;
     }
     nav a.nav-link:hover { color: var(--text); }
-
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
+      flex-shrink: 0;
     }
     .nav-status {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.78rem;
+      gap: 5px;
+      font-size: 0.76rem;
       color: var(--muted);
+      white-space: nowrap;
     }
     .status-dot {
       width: 6px;
@@ -104,6 +118,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
       border-radius: 50%;
       background: var(--accent2);
       box-shadow: 0 0 6px rgba(29,233,182,0.6);
+      flex-shrink: 0;
       animation: pulse-dot 2.5s infinite;
     }
     @keyframes pulse-dot {
@@ -535,7 +550,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 <body>
 
 <nav>
-  <a href="https://laobaitv.net" class="logo">
+  <a href="https://tools.laobaitv.net" class="logo">
     <img src="https://laobaitv.net/images/logo.svg" alt="老白TV" onerror="this.style.display='none'">
     老白TV <span>工具箱</span>
   </a>
@@ -544,7 +559,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
       <span class="status-dot"></span>
       高品质 · 免费
     </span>
-    <a href="https://tools.laobaitv.net" class="nav-link">← 返回工具箱</a>
+    <a href="https://laobaitv.net" class="nav-link" target="_blank" rel="noopener">laobaitv.net →</a>
   </div>
 </nav>
 
