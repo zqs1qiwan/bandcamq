@@ -11,23 +11,6 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <title>Bandcamp Downloader - 老白 Tools</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
-    <link rel="icon" href="https://laobaitv.net/favicon.ico">
-    <style>
-        :root {
-            --bg: #0a0a0f;
-            --bg2: #111318;
-            --bg3: #1a1b23;
-            --card: #16171f;
-            --border: rgba(0,229,255,0.12);
-const buildHtmlUI = (_imageUrl: string | null): string => {
-
-  return `
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bandcamp 音乐下载 · 老白TV工具</title>
@@ -562,7 +545,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
   </div>
 </section>
 
-<div id="player-container" style="display:none">
+<div id="player-container">
   <div class="player-top-row">
     <img id="player-art" src="https://r2.laobaitv.net/laobaitv-logo-shade.png" alt="Album Art">
     <div class="player-info">
@@ -594,11 +577,8 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
   </p>
   <p style="margin-top:6px;opacity:.5">版权 © 2026 老白TV</p>
 </footer>
-    </div>
 
-    <audio id="global-player" preload="auto"></audio>
-
-    <script>
+<script>
         let currentPlaylist = [];
         let currentAlbumArt = '';
         let currentAlbumArtist = '';
