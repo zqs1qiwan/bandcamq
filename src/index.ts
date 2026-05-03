@@ -39,6 +39,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
       overflow-x: hidden;
       width: 100%;
     }
+    html { background: #0a0a0f; }
 
     body {
       background: var(--bg);
