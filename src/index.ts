@@ -3,199 +3,374 @@ export interface Env {
 }
 
 // -----------------------------------------------------------------
-//  bölüm 1: 前端 UI 界面 (V6.5 UX 优化 - 修复版)
+//  bölüm 1: 前端 UI 界面 (V7.0 tools.laobaitv.net 统一风格)
 // -----------------------------------------------------------------
-const buildHtmlUI = (imageUrl: string | null): string => {
-
-  const bgImageUrl = imageUrl || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e';
+const buildHtmlUI = (_imageUrl: string | null): string => {
 
   return `
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>LaobaiTV bandcamp Downloader</title>
+    <title>Bandcamp Downloader - 老白 Tools</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
     <style>
+        :root {
+            --bg: #0a0a0f;
+            --bg2: #111318;
+            --bg3: #1a1b23;
+            --card: #16171f;
+            --border: rgba(0,229,255,0.12);
+            --accent: #00e5ff;
+            --accent2: #1de9b6;
+            --text: #e8eaf0;
+            --muted: #8891a4;
+            --danger: #ff5370;
+            --radius: 14px;
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body {
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0; padding: 20px; color: #fff;
-            background-image: url('${bgImageUrl}');
-            background-size: cover; background-position: center center; background-attachment: fixed;
-            min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        .container {
-            width: 100%; max-width: 700px; margin-top: 5vh; padding: 25px 30px;
-            background-color: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(12px) saturate(180%);
-            -webkit-backdrop-filter: blur(12px) saturate(180%);
-            border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+
+        /* ── Nav bar ── */
+        .nav {
+            width: 100%;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .nav-logo {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+        .nav-logo:hover { color: var(--accent2); }
+        .nav-back {
+            font-size: 0.92em;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-back:hover { color: var(--text); }
+
+        /* ── Page layout ── */
+        .page {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 16px 60px;
+        }
+
+        /* ── Main card ── */
+        .input-card {
+            width: 100%;
+            max-width: 680px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+        }
+
+        /* ── Header ── */
+        .card-header {
             text-align: center;
+            margin-bottom: 28px;
         }
-        h2 {
-            color: #fff; font-family: 'Montserrat', sans-serif; font-size: 2.2em; font-weight: 700;
-            margin-top: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3); 
-            user-select: none; -webkit-user-select: none; -moz-user-select: none;
-            margin-bottom: 30px; 
+        .card-header h1 {
+            font-size: 1.6em;
+            font-weight: 700;
+            margin: 0 0 8px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .container p { 
-            color: rgba(255, 255, 255, 0.9); 
-            margin-top: 0; 
-            margin-bottom: 10px; 
-            user-select: none; -webkit-user-select: none; -moz-user-select: none;
+        .card-header p {
+            font-size: 0.95em;
+            color: var(--muted);
+            margin: 0;
         }
-        .input-group { margin: 0; display: flex; flex-direction: column; gap: 15px; }
+
+        /* ── Input group ── */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
         input[type="text"] {
-            width: 100%; padding: 12px; font-size: 1em; border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px; box-sizing: border-box; background-color: rgba(0, 0, 0, 0.2);
-            color: #fff; text-align: center;
+            width: 100%;
+            padding: 13px 16px;
+            font-size: 16px;
+            font-family: var(--font);
+            background: var(--bg3);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.2s;
         }
-        input[type="text"]::placeholder { color: rgba(255, 255, 255, 0.5); }
-        input[type="text"]:focus { border-color: rgba(255, 255, 255, 0.6); outline: none; }
+        input[type="text"]::placeholder { color: var(--muted); }
+        input[type="text"]:focus { border-color: var(--accent); }
+
         button#fetch-btn {
-            padding: 12px 20px; font-size: 1.1em; font-weight: 600;
-            background-color: rgba(255, 255, 255, 0.15); color: white; border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px; cursor: pointer; transition: background-color 0.2s ease;
+            width: 100%;
+            padding: 13px 20px;
+            font-size: 1em;
+            font-weight: 600;
+            font-family: var(--font);
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            color: #0a0a0f;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
         }
-        button#fetch-btn:hover { background-color: rgba(255, 255, 255, 0.25); }
-
-        /* ✅ 修复 1: 添加按钮禁用时的样式 */
+        button#fetch-btn:hover { opacity: 0.88; }
+        button#fetch-btn:active { transform: scale(0.98); }
         button#fetch-btn:disabled {
-            background-color: rgba(100, 100, 100, 0.3);
-            color: rgba(255, 255, 255, 0.5);
+            opacity: 0.45;
             cursor: not-allowed;
+            transform: none;
         }
 
-        #loading { margin-top: 15px; display: none; } /* (此样式保留，但元素已被移除) */
-        #results-container { margin-top: 20px; text-align: left; width: 100%; }
-       
+        /* ── Results container ── */
+        #results-container {
+            margin-top: 24px;
+            text-align: left;
+            width: 100%;
+        }
+
+        /* ── Player ── */
         #player-container {
-            display: block; margin-top: 20px; width: 100%;
-            padding: 15px; background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px; box-sizing: border-box;
+            display: block;
+            margin-top: 24px;
+            width: 100%;
+            padding: 16px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
         }
         .player-top-row {
-            display: flex; align-items: center;
-            gap: 15px; margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
         }
         #player-art {
-            width: 50px; height: 50px; border-radius: 4px;
-            flex-shrink: 0; object-fit: cover;
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            flex-shrink: 0;
+            object-fit: cover;
+            border: 1px solid var(--border);
         }
         .player-info {
-            flex: 1; white-space: nowrap; overflow: hidden;
-            text-overflow: ellipsis; text-align: left; min-width: 0;
+            flex: 1;
+            min-width: 0;
+            text-align: left;
         }
-        #player-title { 
-            font-weight: 600; display: block; white-space: nowrap;
-            overflow: hidden; text-overflow: ellipsis;
+        #player-title {
+            font-weight: 600;
+            font-size: 0.97em;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text);
         }
-        #player-artist { 
-            font-size: 0.9em; color: rgba(255, 255, 255, 0.8); 
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        #player-artist {
+            font-size: 0.85em;
+            color: var(--muted);
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
         }
         .player-timeline {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-top: 5px;
+            margin-top: 6px;
         }
         #current-time, #total-time {
-            font-size: 0.8em;
-            color: rgba(255, 255, 255, 0.7);
-            min-width: 40px;
+            font-size: 0.78em;
+            color: var(--muted);
+            min-width: 38px;
         }
         #current-time { text-align: left; }
         #total-time { text-align: right; }
         #progress-bar {
-            width: 100%;
             flex: 1;
-            accent-color: #fff;
+            accent-color: var(--accent);
         }
         .player-buttons {
-            display: flex; align-items: center;
-            justify-content: center; gap: 20px; margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin-top: 14px;
         }
         .player-buttons button {
-            background: none; border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white; border-radius: 50%;
-            width: 40px; height: 40px; font-size: 1.2em; padding: 0;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            font-size: 1.15em; padding: 0;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: background-color 0.2s ease;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
         }
-        .player-buttons button:hover { background-color: rgba(255, 255, 255, 0.1); }
-        button#play-pause-btn { width: 45px; height: 45px; font-size: 1.5em; }
-       
+        .player-buttons button:hover {
+            background: var(--bg2);
+            border-color: var(--accent);
+        }
+        button#play-pause-btn {
+            width: 46px; height: 46px;
+            font-size: 1.4em;
+            background: rgba(0,229,255,0.1);
+            border-color: var(--accent);
+        }
+        button#play-pause-btn:hover {
+            background: rgba(0,229,255,0.2);
+        }
+
+        /* ── Album info ── */
         #album-info {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         #album-info img {
             width: 100%;
-            max-width: 210px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 200px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
         #album-info h3 {
-            font-size: 1.3em;
+            font-size: 1.2em;
             font-weight: 600;
-            margin: 15px 0 5px 0;
+            margin: 14px 0 4px;
+            color: var(--text);
         }
         #album-info h4 {
-            font-size: 1.0em;
+            font-size: 0.95em;
             font-weight: 400;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--muted);
             margin: 0;
         }
-       
-        #track-list ul { list-style-type: none; padding-left: 0; }
+
+        /* ── Track list ── */
+        #track-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
         #track-list li {
-            background-color: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 15px; margin-top: -1px; display: flex;
-            justify-content: space-between; align-items: center; transition: background-color 0.2s ease;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            padding: 11px 14px;
+            margin-top: -1px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
             cursor: pointer;
         }
-        #track-list li:first-child { border-top-left-radius: 8px; border-top-right-radius: 8px; }
-        #track-list li:last-child { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; margin-bottom: 10px; }
-        #track-list li:hover { background-color: rgba(0, 0, 0, 0.5); }
+        #track-list li:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+        #track-list li:last-child { border-radius: 0 0 var(--radius) var(--radius); margin-bottom: 8px; }
+        #track-list li:only-child { border-radius: var(--radius); }
+        #track-list li:hover { background: var(--bg2); }
         .track-play-button {
-            font-size: 1.1em; margin-right: 15px;
-            color: rgba(255, 255, 255, 0.7); transition: color 0.2s ease;
+            font-size: 1em;
+            margin-right: 12px;
+            color: var(--muted);
+            transition: color 0.2s;
+            flex-shrink: 0;
         }
-        #track-list li:hover .track-play-button { color: #fff; }
+        #track-list li:hover .track-play-button { color: var(--accent); }
         #track-list li.playing {
-            background-color: rgba(0, 123, 255, 0.3);
-            border-color: rgba(0, 123, 255, 0.5);
+            background: rgba(0,229,255,0.07);
+            border-color: rgba(0,229,255,0.3);
         }
-        #track-list li.playing .track-play-button { color: #007bff; content: '⏸'; }
+        #track-list li.playing .track-play-button { color: var(--accent); }
         .track-info { flex: 1; margin-right: 10px; pointer-events: none; }
-        .track-title { font-weight: 500; }
-        .track-duration { font-size: 0.9em; color: rgba(255, 255, 255, 0.7); margin-left: 8px; }
+        .track-title { font-weight: 500; font-size: 0.95em; color: var(--text); }
+        .track-duration { font-size: 0.85em; color: var(--muted); margin-left: 6px; }
         .track-download-button {
-            text-decoration: none; padding: 8px 12px; background-color: rgba(40, 167, 69, 0.3);
-            color: white; border: 1px solid rgba(40, 167, 69, 0.5); border-radius: 5px;
-            font-size: 0.9em; font-weight: 500; white-space: nowrap; transition: all 0.2s ease;
+            text-decoration: none;
+            padding: 6px 12px;
+            background: rgba(29,233,182,0.12);
+            color: var(--accent2);
+            border: 1px solid rgba(29,233,182,0.3);
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background 0.2s, border-color 0.2s;
             z-index: 2;
         }
-        .track-download-button:hover { background-color: rgba(40, 167, 69, 0.5); border-color: rgba(40, 167, 69, 0.8); }
-        .error { color: #ffcdd2; font-weight: bold; background-color: rgba(211, 47, 47, 0.3); padding: 10px; border-radius: 5px; }
+        .track-download-button:hover {
+            background: rgba(29,233,182,0.22);
+            border-color: var(--accent2);
+        }
+
+        /* ── Error ── */
+        .error {
+            color: var(--danger);
+            font-weight: 600;
+            background: rgba(255,83,112,0.1);
+            border: 1px solid rgba(255,83,112,0.25);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.95em;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 480px) {
+            .input-card { padding: 24px 16px; }
+            .nav { padding: 0 16px; }
+        }
     </style>
 </head>
 <body>
-   
-    <div class="container">
-        <h2>LaobaiTV bandcamp Downloader</h2>
-        <p>输入 Bandcamp 专辑 URL:</p>
+
+    <nav class="nav">
+        <a href="https://tools.laobaitv.net" class="nav-logo">老白 Tools</a>
+        <a href="https://tools.laobaitv.net" class="nav-back">← 返回工具箱</a>
+    </nav>
+
+    <div class="page">
+      <div class="input-card">
+        <div class="card-header">
+            <h1>Bandcamp Downloader</h1>
+            <p>输入 Bandcamp 专辑 URL，一键解析并下载曲目</p>
+        </div>
         <div class="input-group">
             <input type="text" id="album-url" placeholder="https://artist.bandcamp.com/album/...">
             <button id="fetch-btn">获取曲目</button>
         </div>
-       
+
         <div id="player-container">
             <div class="player-top-row">
                 <img id="player-art" src="https://r2.laobaitv.net/laobaitv-logo-shade.png" alt="Album Art">
@@ -217,6 +392,7 @@ const buildHtmlUI = (imageUrl: string | null): string => {
         </div>
 
         <div id="results-container"></div>
+      </div>
     </div>
 
     <audio id="global-player" preload="auto"></audio>
