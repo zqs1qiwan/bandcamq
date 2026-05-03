@@ -129,6 +129,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 
     /* ── Hero ── */
     .hero {
+      flex: 1;
       padding: 72px 24px 48px;
       text-align: center;
       background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,229,255,0.08) 0%, transparent 70%);
@@ -523,7 +524,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 
     /* ── Footer ── */
     footer {
-      margin-top: 60px;
+      margin-top: 0;
       padding: 40px 24px 24px;
       text-align: center;
       color: var(--muted);
