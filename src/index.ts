@@ -18,19 +18,120 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ================================================
+       老白TV Design System — Design Tokens (Apple Style)
+       Night = default (:root), Day = body.day-mode
+       ================================================ */
+
+    /* ---- Night Mode (Default) ---- */
     :root {
-      --bg:      #0a0a0f;
-      --bg2:     #111318;
-      --bg3:     #1a1b23;
-      --card:    #16171f;
-      --border:  rgba(0,229,255,0.12);
-      --accent:  #00e5ff;
-      --accent2: #1de9b6;
-      --text:    #e8eaf0;
-      --muted:   #8891a4;
-      --danger:  #ff5370;
+      /* — Colors — */
+      --color-primary: #0A84FF;
+      --color-primary-rgb: 10, 132, 255;
+      --color-accent: #30D158;
+      --color-accent-rgb: 48, 209, 88;
+      --color-text: #f5f5f7;
+      --color-text-secondary: #a1a1a6;
+      --color-bg: #000000;
+      --color-bg-elevated: #1c1c1e;
+      --color-bg-card: rgba(28, 28, 30, 0.8);
+      --color-bg-card-solid: #1c1c1e;
+      --color-border: rgba(255, 255, 255, 0.08);
+      --color-separator: rgba(255, 255, 255, 0.06);
+      --color-overlay: rgba(0, 0, 0, 0.5);
+
+      /* — Legacy aliases (used by business logic CSS) — */
+      --bg:      #000000;
+      --bg2:     #1c1c1e;
+      --bg3:     #2c2c2e;
+      --card:    rgba(28, 28, 30, 0.8);
+      --border:  rgba(255, 255, 255, 0.08);
+      --accent:  #0A84FF;
+      --accent2: #30D158;
+      --text:    #f5f5f7;
+      --muted:   #a1a1a6;
+      --danger:  #FF453A;
       --radius:  14px;
-      --font:    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
+      --font:    'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'PingFang SC', sans-serif;
+
+      /* — Typography — */
+      --font-base: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+      --font-heading: 'DM Sans', 'Inter', -apple-system, sans-serif;
+      --font-size-base: 17px;
+      --line-height: 1.65;
+
+      /* — Spacing — */
+      --space-1: 0.5rem;
+      --space-2: 1rem;
+      --space-3: 1.5rem;
+      --space-4: 2rem;
+      --space-5: 3rem;
+      --space-6: 4rem;
+      --space-8: 6rem;
+      --space-10: 8rem;
+
+      /* — Layout — */
+      --max-width: 1120px;
+      --content-padding: 2rem;
+
+      /* — Border Radius — */
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-pill: 100px;
+
+      /* — Shadows — */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+      --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.3);
+      --shadow-glow: 0 0 30px rgba(var(--color-primary-rgb), 0.25);
+
+      /* — Motion — */
+      --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --duration-fast: 0.2s;
+      --duration-base: 0.35s;
+      --duration-slow: 0.6s;
+      --duration-theme: 0.8s;
+
+      /* — Gradients — */
+      --gradient-mesh-1: rgba(var(--color-primary-rgb), 0.15);
+      --gradient-mesh-2: rgba(var(--color-accent-rgb), 0.08);
+      --hero-gradient: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-elevated) 100%);
+    }
+
+    /* ---- Day Mode ---- */
+    body.day-mode {
+      --color-primary: #007AFF;
+      --color-primary-rgb: 0, 122, 255;
+      --color-accent: #34C759;
+      --color-accent-rgb: 52, 199, 89;
+      --color-text: #1d1d1f;
+      --color-text-secondary: #6e6e73;
+      --color-bg: #ffffff;
+      --color-bg-elevated: #f5f5f7;
+      --color-bg-card: rgba(255, 255, 255, 0.8);
+      --color-bg-card-solid: #ffffff;
+      --color-border: rgba(0, 0, 0, 0.06);
+      --color-separator: rgba(0, 0, 0, 0.04);
+      --color-overlay: rgba(255, 255, 255, 0.6);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+      --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.06);
+      --shadow-glow: 0 0 30px rgba(var(--color-primary-rgb), 0.15);
+      --bg: #ffffff;
+      --bg2: #f5f5f7;
+      --bg3: #e5e5ea;
+      --card: rgba(255, 255, 255, 0.8);
+      --border: rgba(0, 0, 0, 0.06);
+      --accent: #007AFF;
+      --accent2: #34C759;
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --danger: #FF3B30;
     }
 
     html { scroll-behavior: smooth; }
@@ -38,110 +139,174 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
     html, body {
       overflow-x: hidden;
       width: 100%;
+      margin: 0; padding: 0;
     }
-    html { background: #0a0a0f; }
+    html { font-size: 17px; background: var(--color-bg); }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
+      font-family: var(--font-base);
+      background: var(--color-bg);
+      color: var(--color-text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      line-height: 1.6;
+      line-height: var(--line-height);
+      transition: background var(--duration-theme) var(--ease-out),
+                  color var(--duration-theme) var(--ease-out);
     }
 
-    /* ── Nav ── */
-    nav {
+    /* ── Header (Design System Standard) ── */
+    .site-header {
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
+      padding: 0.75rem 0;
+      background: var(--color-overlay);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--color-separator);
+      transition: box-shadow var(--duration-base) var(--ease-out),
+                  background var(--duration-base) var(--ease-out);
+    }
+    .site-header.header-scrolled { box-shadow: var(--shadow-md); }
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--content-padding);
+    }
+    .header-container {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
-      height: 56px;
-      background: var(--bg2);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      min-width: 0;
-      box-sizing: border-box;
+      align-items: center;
     }
-    .logo {
+    .site-logo {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 0.75rem;
       text-decoration: none;
-      color: var(--text);
-      font-size: 15px;
-      font-weight: 600;
-      min-width: 0;
-      overflow: hidden;
-      transition: opacity 0.2s;
     }
-    .logo:hover { opacity: 0.8; }
-    .logo img {
-      height: 26px;
+    .site-logo img {
+      height: 36px;
       width: auto;
-      flex-shrink: 0;
-      filter: brightness(1.1);
+      border-radius: 8px;
+      transition: transform var(--duration-fast) var(--ease-out);
     }
-    .logo span {
-      color: var(--accent);
-      white-space: nowrap;
+    .site-logo:hover img { transform: scale(1.06); }
+    .site-logo .logo-light { display: none; }
+    .site-logo .logo-dark { display: block; }
+    body.day-mode .site-logo .logo-light { display: block; }
+    body.day-mode .site-logo .logo-dark { display: none; }
+
+    /* Main nav */
+    .main-nav ul {
+      display: flex;
+      list-style: none;
+      gap: 0.25rem;
+      align-items: center;
+      margin: 0;
+      padding: 0;
     }
-    nav a.nav-link {
-      color: var(--muted);
+    .main-nav a {
+      color: var(--color-text);
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: var(--radius-pill);
       text-decoration: none;
-      font-size: 13px;
-      transition: color 0.2s;
-      white-space: nowrap;
-    }
-    nav a.nav-link:hover { color: var(--text); }
-    .nav-right {
+      transition: all var(--duration-fast) var(--ease-out);
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 0.3rem;
+    }
+    .main-nav a:hover { background: var(--color-separator); }
+    .main-nav a.nav-active {
+      background: rgba(var(--color-primary-rgb), 0.1);
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+    .nav-icon {
+      width: 16px;
+      height: 16px;
+      vertical-align: -2px;
+      display: inline-block;
       flex-shrink: 0;
+      transition: transform var(--duration-fast) var(--ease-out);
     }
-    .nav-status {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.76rem;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .status-dot {
-      width: 6px;
-      height: 6px;
+    .main-nav a:hover .nav-icon { transform: scale(1.15); }
+
+    /* Theme toggle */
+    .theme-toggle {
+      background: var(--color-separator);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-secondary);
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: var(--accent2);
-      box-shadow: 0 0 6px rgba(29,233,182,0.6);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: all var(--duration-base) var(--ease-out);
       flex-shrink: 0;
-      animation: pulse-dot 2.5s infinite;
     }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+    .theme-toggle:hover {
+      background: var(--color-border);
+      color: var(--color-text);
+      transform: scale(1.1);
     }
-    @media (max-width: 480px) { .nav-status { display: none; } }
+
+    /* Mobile toggle */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--color-text);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: var(--radius-sm);
+    }
+
+    @media (max-width: 768px) {
+      .main-nav { display: none; }
+      .main-nav.active {
+        display: block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--color-bg-elevated);
+        border-bottom: 1px solid var(--color-border);
+        padding: var(--space-1) 0;
+      }
+      .main-nav.active ul {
+        flex-direction: column;
+        padding: var(--space-3);
+        gap: 0.15rem;
+      }
+      .main-nav.active a {
+        display: block;
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius-md);
+      }
+      .main-nav.active .theme-toggle { margin: 0.5rem 1rem; }
+      .mobile-menu-toggle { display: block; }
+    }
 
     /* ── Hero ── */
     .hero {
       flex: 1;
       padding: 48px 24px 24px;
       text-align: center;
-      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,229,255,0.08) 0%, transparent 70%);
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(var(--color-primary-rgb), 0.08) 0%, transparent 70%);
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(0,229,255,0.08);
-      border: 1px solid rgba(0,229,255,0.2);
+      background: rgba(var(--color-primary-rgb), 0.08);
+      border: 1px solid rgba(var(--color-primary-rgb), 0.2);
       color: var(--accent);
       font-size: 12px;
       padding: 4px 12px;
@@ -177,7 +342,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
       max-width: 720px;
       margin: 0 auto;
       width: 100%;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,229,255,0.04);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(var(--color-primary-rgb), 0.04);
     }
 
     .input-row {
@@ -200,7 +365,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
       min-width: 0;
     }
     input#album-url::placeholder { color: var(--muted); }
-    input#album-url:focus { border-color: rgba(0,229,255,0.4); }
+    input#album-url:focus { border-color: rgba(var(--color-primary-rgb), 0.4); }
 
     button#fetch-btn {
       display: inline-flex;
@@ -218,12 +383,12 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
       transition: all .2s;
       white-space: nowrap;
       min-width: 96px;
-      background: linear-gradient(135deg, #00b4d8, #00e5ff);
-      color: #000;
+      background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.8), var(--accent));
+      color: #fff;
     }
     button#fetch-btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 20px rgba(0,229,255,0.35);
+      box-shadow: 0 4px 20px rgba(var(--color-primary-rgb), 0.35);
     }
     button#fetch-btn:active { transform: translateY(0); }
     button#fetch-btn:disabled {
@@ -349,12 +514,12 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
     button#play-pause-btn {
       width: 48px; height: 48px;
       font-size: 20px;
-      background: rgba(0,229,255,0.1);
-      border-color: rgba(0,229,255,0.3);
+      background: rgba(var(--color-primary-rgb), 0.1);
+      border-color: rgba(var(--color-primary-rgb), 0.3);
     }
 
     button#play-pause-btn:hover {
-      background: rgba(0,229,255,0.2);
+      background: rgba(var(--color-primary-rgb), 0.2);
       border-color: var(--accent);
     }
 
@@ -430,11 +595,11 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
     }
 
     #track-list li:last-child { border-bottom: none; }
-    #track-list li:hover { background: rgba(0,229,255,0.04); }
+    #track-list li:hover { background: rgba(var(--color-primary-rgb), 0.04); }
 
     #track-list li.playing {
-      background: rgba(0,229,255,0.07);
-      border-bottom-color: rgba(0,229,255,0.2);
+      background: rgba(var(--color-primary-rgb), 0.07);
+      border-bottom-color: rgba(var(--color-primary-rgb), 0.2);
     }
 
     .track-play-button {
@@ -476,8 +641,8 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
       gap: 5px;
       text-decoration: none;
       padding: 7px 14px;
-      background: linear-gradient(135deg, #00b4d8, #00e5ff);
-      color: #000;
+      background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.8), var(--accent));
+      color: #fff;
       font-size: 12px;
       font-weight: 700;
       border-radius: 8px;
@@ -491,7 +656,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 
     .track-download-button:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(0,229,255,0.35);
+      box-shadow: 0 4px 14px rgba(var(--color-primary-rgb), 0.35);
     }
 
     /* ── Error ── */
@@ -517,7 +682,7 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 
     .spin {
       width: 16px; height: 16px;
-      border: 2px solid rgba(0,229,255,0.3);
+      border: 2px solid rgba(var(--color-primary-rgb), 0.3);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin .7s linear infinite;
@@ -526,15 +691,34 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 
     /* ── Footer ── */
     footer {
-      margin-top: 0;
-      padding: 40px 24px 24px;
+      margin-top: auto;
+      padding: var(--space-4) var(--content-padding) var(--space-3);
       text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--color-separator);
     }
-    footer a { color: var(--muted); text-decoration: none; }
-    footer a:hover { color: var(--accent); }
+    footer a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+    footer a:hover { color: var(--color-primary); }
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+    .footer-sep {
+      color: var(--color-border);
+    }
+    .footer-copy {
+      margin: 0;
+      opacity: 0.5;
+    }
 
     /* ── Responsive ── */
     @media (max-width: 600px) {
@@ -552,19 +736,31 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 </head>
 <body>
 
-<nav>
-  <a href="https://tools.laobaitv.net" class="logo">
-    <img src="https://laobaitv.net/assets/images/logo/laobaitv-logo-white.png" alt="老白TV" onerror="this.style.display='none'">
-    老白TV <span>工具箱</span>
-  </a>
-  <div class="nav-right">
-    <span class="nav-status">
-      <span class="status-dot"></span>
-      高品质 · 免费
-    </span>
-    <a href="https://laobaitv.net" class="nav-link" target="_blank" rel="noopener">laobaitv.net →</a>
-  </div>
-</nav>
+  <!-- Header: 老白TV Design System Standard -->
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <div class="header-container">
+        <a href="https://laobaitv.net" class="site-logo" aria-label="老白TV 首页">
+          <img src="https://laobaitv.net/assets/images/logo/laobaitv-logo-white.png" alt="老白TV" class="logo-dark" onerror="this.style.display='none'">
+          <img src="https://laobaitv.net/assets/images/logo/laobaitv-logo-black.png" alt="老白TV" class="logo-light" onerror="this.style.display='none'">
+        </a>
+
+        <nav class="main-nav" role="navigation" aria-label="主导航">
+          <ul>
+            <li><a href="https://laobaitv.net/"><svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> 首页</a></li>
+            <li><a href="https://iptv.laobaitv.net/"><svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg> IPTV</a></li>
+            <li><a href="https://tools.laobaitv.net/" class="nav-active" aria-current="page"><svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg> 工具箱</a></li>
+            <li><a href="https://laobaitv.net/pages/blog.html"><svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 博客</a></li>
+            <li><button class="theme-toggle" aria-label="切换主题"><svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></li>
+          </ul>
+        </nav>
+
+        <button class="mobile-menu-toggle" aria-label="打开菜单" aria-expanded="false">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
 
 <section class="hero">
   <div class="hero-badge">
@@ -620,12 +816,16 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
 <audio id="global-player" preload="auto"></audio>
 
 <footer>
-  <p>
-    <a href="https://laobaitv.net">老白TV</a> ·
-    <a href="https://tools.laobaitv.net">工具箱</a> ·
-    本工具仅供个人学习研究使用
-  </p>
-  <p style="margin-top:6px;opacity:.5">版权 © 2026 老白TV</p>
+  <div class="footer-links">
+    <a href="https://laobaitv.net">老白TV</a>
+    <span class="footer-sep">·</span>
+    <a href="https://iptv.laobaitv.net">IPTV直播</a>
+    <span class="footer-sep">·</span>
+    <a href="https://tools.laobaitv.net">工具箱</a>
+    <span class="footer-sep">·</span>
+    <a href="https://laobaitv.net/pages/blog.html">博客</a>
+  </div>
+  <p class="footer-copy">© 2026 老白TV · 本工具仅供个人学习研究使用</p>
 </footer>
 
 <script>
@@ -887,6 +1087,84 @@ const buildHtmlUI = (_imageUrl: string | null): string => {
             }
         };
     </script>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ---- Auto Day/Night Mode (北京时间 06:00-18:00 为日间) ----
+      function isDaytime() {
+        var hour = new Date().getHours();
+        return hour >= 6 && hour < 18;
+      }
+
+      function applyTheme(dayMode) {
+        document.body.classList.toggle('day-mode', dayMode);
+        var toggle = document.querySelector('.theme-toggle');
+        if (toggle) {
+          toggle.innerHTML = dayMode
+            ? '<svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>'
+            : '<svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+          toggle.setAttribute('aria-label', dayMode ? '切换到夜间模式' : '切换到日间模式');
+        }
+      }
+
+      var savedTheme = localStorage.getItem('laobaitheme');
+      var initialIsDay;
+      if (savedTheme === 'day') {
+        initialIsDay = true;
+      } else if (savedTheme === 'night') {
+        initialIsDay = false;
+      } else {
+        initialIsDay = isDaytime();
+      }
+      applyTheme(initialIsDay);
+
+      var themeBtn = document.querySelector('.theme-toggle');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', function() {
+          var currentlyDay = document.body.classList.contains('day-mode');
+          var newIsDay = !currentlyDay;
+          applyTheme(newIsDay);
+          localStorage.setItem('laobaitheme', newIsDay ? 'day' : 'night');
+        });
+      }
+
+      // ---- Mobile Menu Toggle ----
+      var mobileToggle = document.querySelector('.mobile-menu-toggle');
+      var mainNav = document.querySelector('.main-nav');
+      if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+          mainNav.classList.toggle('active');
+          var isExpanded = mainNav.classList.contains('active');
+          mobileToggle.setAttribute('aria-expanded', isExpanded);
+        });
+        mainNav.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            mainNav.classList.remove('active');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+        document.addEventListener('click', function(e) {
+          if (mainNav.classList.contains('active') &&
+              !mainNav.contains(e.target) &&
+              !mobileToggle.contains(e.target)) {
+            mainNav.classList.remove('active');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      // ---- Header scroll shadow ----
+      var header = document.getElementById('site-header');
+      if (header) {
+        window.addEventListener('scroll', function() {
+          header.classList.toggle('header-scrolled', window.scrollY > 10);
+        }, { passive: true });
+      }
+
+    })();
+  </script>
 </body>
 </html>
 `;
